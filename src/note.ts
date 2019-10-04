@@ -1,14 +1,14 @@
 import { NoteName } from './noteName';
-import { NoteModifier } from './noteModifier';
+import { NoteAlteration } from './noteAlteration';
 
 export class Note {
   private name: NoteName;
-  private modifier: NoteModifier;
+  private modifier: NoteAlteration;
   private position: number;
 
   public constructor(
     name: NoteName,
-    modifier: NoteModifier = NoteModifier.Normal
+    modifier: NoteAlteration = NoteAlteration.Natural
   ) {
     this.name = name;
     this.modifier = modifier;
@@ -40,11 +40,11 @@ export class Note {
         throw new Error('Invariant: Illegal note name');
     }
 
-    if (modifier === NoteModifier.Sharp) {
+    if (modifier === NoteAlteration.Sharp) {
       position = position === 12 ? 1 : position + 1;
     }
 
-    if (modifier === NoteModifier.Flat) {
+    if (modifier === NoteAlteration.Flat) {
       position = position === 1 ? 12 : position - 1;
     }
 
@@ -55,12 +55,36 @@ export class Note {
     return this.position;
   }
 
+  public isSharp(): boolean {
+    return this.modifier === NoteAlteration.Sharp;
+  }
+
+  public isFlat(): boolean {
+    return this.modifier === NoteAlteration.Flat;
+  }
+
+  public isNatural(): boolean {
+    return this.modifier === NoteAlteration.Natural;
+  }
+
+  public toSharp(): Note {
+    return new Note(this.name, NoteAlteration.Sharp);
+  }
+
+  public toFlat(): Note {
+    return new Note(this.name, NoteAlteration.Flat);
+  }
+
+  public toNatural(): Note {
+    return new Note(this.name, NoteAlteration.Natural);
+  }
+
   public toString(): string {
     const base = NoteName[this.name];
     const modifier =
-      this.modifier === NoteModifier.Sharp
+      this.modifier === NoteAlteration.Sharp
         ? '#'
-        : this.modifier === NoteModifier.Flat
+        : this.modifier === NoteAlteration.Flat
         ? 'b'
         : '';
 
