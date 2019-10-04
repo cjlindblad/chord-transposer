@@ -82,9 +82,9 @@ describe('note', () => {
     const cSharp = new Note(NoteName.C, NoteAlteration.Sharp);
     const cFlat = new Note(NoteName.C, NoteAlteration.Flat);
 
-    expect(c.getPosition()).toEqual(1);
-    expect(cSharp.getPosition()).toEqual(2);
-    expect(cFlat.getPosition()).toEqual(12);
+    expect(c.getPosition()).toEqual(0);
+    expect(cSharp.getPosition()).toEqual(1);
+    expect(cFlat.getPosition()).toEqual(11);
   });
 
   it('has a correct positional value for b variants', () => {
@@ -92,9 +92,9 @@ describe('note', () => {
     const bSharp = new Note(NoteName.B, NoteAlteration.Sharp);
     const bFlat = new Note(NoteName.B, NoteAlteration.Flat);
 
-    expect(b.getPosition()).toEqual(12);
-    expect(bSharp.getPosition()).toEqual(1);
-    expect(bFlat.getPosition()).toEqual(11);
+    expect(b.getPosition()).toEqual(11);
+    expect(bSharp.getPosition()).toEqual(0);
+    expect(bFlat.getPosition()).toEqual(10);
   });
 
   it('has a correct positional value for e variants', () => {
@@ -102,9 +102,9 @@ describe('note', () => {
     const eSharp = new Note(NoteName.E, NoteAlteration.Sharp);
     const eFlat = new Note(NoteName.E, NoteAlteration.Flat);
 
-    expect(e.getPosition()).toEqual(5);
-    expect(eSharp.getPosition()).toEqual(6);
-    expect(eFlat.getPosition()).toEqual(4);
+    expect(e.getPosition()).toEqual(4);
+    expect(eSharp.getPosition()).toEqual(5);
+    expect(eFlat.getPosition()).toEqual(3);
   });
 
   it('has a correct positional valute for f variants', () => {
@@ -112,8 +112,8 @@ describe('note', () => {
     const fSharp = new Note(NoteName.F, NoteAlteration.Sharp);
     const fFlat = new Note(NoteName.F, NoteAlteration.Flat);
 
-    expect(f.getPosition()).toEqual(6);
-    expect(fSharp.getPosition()).toEqual(7);
-    expect(fFlat.getPosition()).toEqual(5);
+    expect(f.getPosition()).toEqual(5);
+    expect(fSharp.getPosition()).toEqual(6);
+    expect(fFlat.getPosition()).toEqual(4);
   });
 });

@@ -16,36 +16,36 @@ export class Note {
     let position;
     switch (this.name) {
       case NoteName.C:
-        position = 1;
+        position = 0;
         break;
       case NoteName.D:
-        position = 3;
+        position = 2;
         break;
       case NoteName.E:
-        position = 5;
+        position = 4;
         break;
       case NoteName.F:
-        position = 6;
+        position = 5;
         break;
       case NoteName.G:
-        position = 8;
+        position = 7;
         break;
       case NoteName.A:
-        position = 10;
+        position = 9;
         break;
       case NoteName.B:
-        position = 12;
+        position = 11;
         break;
       default:
         throw new Error('Invariant: Illegal note name');
     }
 
     if (modifier === NoteAlteration.Sharp) {
-      position = position === 12 ? 1 : position + 1;
+      position = position === 11 ? 0 : position + 1;
     }
 
     if (modifier === NoteAlteration.Flat) {
-      position = position === 1 ? 12 : position - 1;
+      position = position === 0 ? 11 : position - 1;
     }
 
     this.position = position;
