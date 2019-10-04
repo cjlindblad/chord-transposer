@@ -79,6 +79,38 @@ export class Note {
     return new Note(this.name, NoteAlteration.Natural);
   }
 
+  public toNext(): Note {
+    let nextNoteName: NoteName;
+
+    switch (this.name) {
+      case NoteName.A:
+        nextNoteName = NoteName.B;
+        break;
+      case NoteName.B:
+        nextNoteName = NoteName.C;
+        break;
+      case NoteName.C:
+        nextNoteName = NoteName.D;
+        break;
+      case NoteName.D:
+        nextNoteName = NoteName.E;
+        break;
+      case NoteName.E:
+        nextNoteName = NoteName.F;
+        break;
+      case NoteName.F:
+        nextNoteName = NoteName.G;
+        break;
+      case NoteName.G:
+        nextNoteName = NoteName.A;
+        break;
+      default:
+        throw new Error('Invariant - invalid note name');
+    }
+
+    return new Note(nextNoteName);
+  }
+
   public toString(): string {
     const base = NoteName[this.name];
     const modifier =

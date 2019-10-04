@@ -1,9 +1,9 @@
 export enum NoteName {
+  A,
+  B,
   C,
   D,
   E,
   F,
-  G,
-  A,
-  B
+  G
 }

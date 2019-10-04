@@ -60,6 +60,23 @@ describe('note', () => {
     expect(fNatural.toString()).toEqual('F');
   });
 
+  it('can create next natural note', () => {
+    const aNatural = new Note(NoteName.A);
+    const eSharp = new Note(NoteName.E, NoteAlteration.Sharp);
+    const cFlat = new Note(NoteName.C, NoteAlteration.Flat);
+
+    const bNatural = aNatural.toNext();
+    const fNatural = eSharp.toNext();
+    const dNatural = cFlat.toNext();
+
+    expect(bNatural.isNatural()).toEqual(true);
+    expect(bNatural.toString()).toEqual('B');
+    expect(fNatural.isNatural()).toEqual(true);
+    expect(fNatural.toString()).toEqual('F');
+    expect(dNatural.isNatural()).toEqual(true);
+    expect(dNatural.toString()).toEqual('D');
+  });
+
   it('has a correct positional value for c variants', () => {
     const c = new Note(NoteName.C);
     const cSharp = new Note(NoteName.C, NoteAlteration.Sharp);
