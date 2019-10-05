@@ -14,6 +14,16 @@ export class Note {
     this.modifier = modifier;
 
     let position;
+    /*
+
+    |  | | | |  |  | | | | |1|  |
+    |  |1| |3|  |  |6| |8| |0|  |
+    |  +-+ +-+  |  +-+ +-+ +-+  |
+    |   |   |   |   |   |   | 1 |
+    | 0 | 2 | 4 | 5 | 7 | 9 | 1 |
+    +---+---+---+---+---+---+---+
+
+    */
     switch (this.name) {
       case NoteName.C:
         position = 0;

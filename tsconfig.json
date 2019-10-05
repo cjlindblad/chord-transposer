@@ -3,6 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "outDir": "out",
-    "strict": true
+    "strict": true,
+    "noImplicitAny": true
   }
 }
