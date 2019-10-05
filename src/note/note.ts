@@ -41,11 +41,19 @@ export class Note {
     }
 
     if (modifier === NoteAlteration.Sharp) {
-      position = position === 11 ? 0 : position + 1;
+      position = (position + 1) % 12;
+    }
+
+    if (modifier === NoteAlteration.DoubleSharp) {
+      position = (position + 2) % 12;
     }
 
     if (modifier === NoteAlteration.Flat) {
-      position = position === 0 ? 11 : position - 1;
+      position = (position - 1 + 12) % 12;
+    }
+
+    if (modifier === NoteAlteration.DoubleFlat) {
+      position = (position - 2 + 12) % 12;
     }
 
     this.position = position;
@@ -59,8 +67,16 @@ export class Note {
     return this.modifier === NoteAlteration.Sharp;
   }
 
+  public isDoubleSharp(): boolean {
+    return this.modifier === NoteAlteration.DoubleSharp;
+  }
+
   public isFlat(): boolean {
     return this.modifier === NoteAlteration.Flat;
+  }
+
+  public isDoubleFlat(): boolean {
+    return this.modifier === NoteAlteration.DoubleFlat;
   }
 
   public isNatural(): boolean {
@@ -71,8 +87,16 @@ export class Note {
     return new Note(this.name, NoteAlteration.Sharp);
   }
 
+  public toDoubleSharp(): Note {
+    return new Note(this.name, NoteAlteration.DoubleSharp);
+  }
+
   public toFlat(): Note {
     return new Note(this.name, NoteAlteration.Flat);
+  }
+
+  public toDoubleFlat(): Note {
+    return new Note(this.name, NoteAlteration.DoubleFlat);
   }
 
   public toNatural(): Note {
@@ -116,8 +140,12 @@ export class Note {
     const modifier =
       this.modifier === NoteAlteration.Sharp
         ? '#'
+        : this.modifier === NoteAlteration.DoubleSharp
+        ? 'x'
         : this.modifier === NoteAlteration.Flat
         ? 'b'
+        : this.modifier === NoteAlteration.DoubleFlat
+        ? 'bb'
         : '';
 
     return `${base}${modifier}`;

@@ -2,7 +2,7 @@ import { NoteName } from './noteName';
 import { Note } from './note';
 import { NoteAlteration } from './noteAlteration';
 
-describe('note', () => {
+describe('note creation', () => {
   it('is created as natural by default', () => {
     const a = new Note(NoteName.A);
     const b = new Note(NoteName.B);
@@ -23,6 +23,16 @@ describe('note', () => {
     expect(bSharp.toString()).toEqual('B#');
   });
 
+  it('can be double sharp', () => {
+    const cDoubleSharp = new Note(NoteName.C, NoteAlteration.DoubleSharp);
+    const bDoubleSharp = new Note(NoteName.B, NoteAlteration.DoubleSharp);
+
+    expect(cDoubleSharp.isDoubleSharp()).toEqual(true);
+    expect(cDoubleSharp.toString()).toEqual('Cx');
+    expect(bDoubleSharp.isDoubleSharp()).toEqual(true);
+    expect(bDoubleSharp.toString()).toEqual('Bx');
+  });
+
   it('can be flat', () => {
     const bFlat = new Note(NoteName.B, NoteAlteration.Flat);
     const fFlat = new Note(NoteName.F, NoteAlteration.Flat);
@@ -33,6 +43,18 @@ describe('note', () => {
     expect(fFlat.toString()).toEqual('Fb');
   });
 
+  it('can be double flat', () => {
+    const bDoubleFlat = new Note(NoteName.B, NoteAlteration.DoubleFlat);
+    const fDoubleFlat = new Note(NoteName.F, NoteAlteration.DoubleFlat);
+
+    expect(bDoubleFlat.isDoubleFlat()).toEqual(true);
+    expect(bDoubleFlat.toString()).toEqual('Bbb');
+    expect(fDoubleFlat.isDoubleFlat()).toEqual(true);
+    expect(fDoubleFlat.toString()).toEqual('Fbb');
+  });
+});
+
+describe('note alteration', () => {
   it('can be sharpened', () => {
     const naturalC = new Note(NoteName.C);
 
@@ -42,6 +64,15 @@ describe('note', () => {
     expect(cSharp.toString()).toEqual('C#');
   });
 
+  it('can be double sharpened', () => {
+    const naturalC = new Note(NoteName.C);
+
+    const cDoubleSharp = naturalC.toDoubleSharp();
+
+    expect(cDoubleSharp.isDoubleSharp()).toEqual(true);
+    expect(cDoubleSharp.toString()).toEqual('Cx');
+  });
+
   it('can be flattened', () => {
     const naturalE = new Note(NoteName.E);
 
@@ -49,6 +80,15 @@ describe('note', () => {
 
     expect(eFlat.isFlat()).toEqual(true);
     expect(eFlat.toString()).toEqual('Eb');
+  });
+
+  it('can be double flattened', () => {
+    const naturalE = new Note(NoteName.E);
+
+    const eDoubleFlat = naturalE.toDoubleFlat();
+
+    expect(eDoubleFlat.isDoubleFlat()).toEqual(true);
+    expect(eDoubleFlat.toString()).toEqual('Ebb');
   });
 
   it('can be naturalized', () => {
@@ -76,7 +116,9 @@ describe('note', () => {
     expect(dNatural.isNatural()).toEqual(true);
     expect(dNatural.toString()).toEqual('D');
   });
+});
 
+describe('note position value', () => {
   it('has a correct positional value for c variants', () => {
     const c = new Note(NoteName.C);
     const cSharp = new Note(NoteName.C, NoteAlteration.Sharp);
