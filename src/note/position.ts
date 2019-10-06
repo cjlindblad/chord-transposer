@@ -23,9 +23,9 @@ export class Position {
 
   public static from(name: NoteName, alteration: NoteAlteration): Position {
     const baseValue = this.lookupBaseValue(name);
-    const alterationDiff = this.lookupAlterationDiff(alteration);
+    const alterationOffset = this.lookupAlterationOffset(alteration);
 
-    const value = (baseValue + alterationDiff + Note.Count) % Note.Count;
+    const value = (baseValue + alterationOffset + Note.Count) % Note.Count;
 
     return new Position(value);
   }
@@ -44,7 +44,7 @@ export class Position {
     return this.baseValues[name];
   }
 
-  private static alterationDiffs = {
+  private static alterationOffsets = {
     [NoteAlteration.Natural]: 0,
     [NoteAlteration.Sharp]: 1,
     [NoteAlteration.DoubleSharp]: 2,
@@ -52,8 +52,8 @@ export class Position {
     [NoteAlteration.DoubleFlat]: -2
   };
 
-  private static lookupAlterationDiff(alteration: NoteAlteration): number {
-    return this.alterationDiffs[alteration];
+  private static lookupAlterationOffset(alteration: NoteAlteration): number {
+    return this.alterationOffsets[alteration];
   }
 
   public getValue(): number {
