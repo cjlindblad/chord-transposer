@@ -1,10 +1,13 @@
 import { NoteName } from './noteName';
 import { NoteAlteration } from './noteAlteration';
+import { Position } from './position';
 
 export class Note {
+  static readonly Count = 12;
+
   private name: NoteName;
   private modifier: NoteAlteration;
-  private position: number;
+  private position: Position;
 
   public constructor(
     name: NoteName,
@@ -12,65 +15,11 @@ export class Note {
   ) {
     this.name = name;
     this.modifier = modifier;
-
-    let position;
-    /*
-
-    |  | | | |  |  | | | | |1|  |
-    |  |1| |3|  |  |6| |8| |0|  |
-    |  +-+ +-+  |  +-+ +-+ +-+  |
-    |   |   |   |   |   |   | 1 |
-    | 0 | 2 | 4 | 5 | 7 | 9 | 1 |
-    +---+---+---+---+---+---+---+
-
-    */
-    switch (this.name) {
-      case NoteName.C:
-        position = 0;
-        break;
-      case NoteName.D:
-        position = 2;
-        break;
-      case NoteName.E:
-        position = 4;
-        break;
-      case NoteName.F:
-        position = 5;
-        break;
-      case NoteName.G:
-        position = 7;
-        break;
-      case NoteName.A:
-        position = 9;
-        break;
-      case NoteName.B:
-        position = 11;
-        break;
-      default:
-        throw new Error('Invariant: Illegal note name');
-    }
-
-    if (modifier === NoteAlteration.Sharp) {
-      position = (position + 1) % 12;
-    }
-
-    if (modifier === NoteAlteration.DoubleSharp) {
-      position = (position + 2) % 12;
-    }
-
-    if (modifier === NoteAlteration.Flat) {
-      position = (position - 1 + 12) % 12;
-    }
-
-    if (modifier === NoteAlteration.DoubleFlat) {
-      position = (position - 2 + 12) % 12;
-    }
-
-    this.position = position;
+    this.position = Position.from(name, modifier);
   }
 
   public getPosition(): number {
-    return this.position;
+    return this.position.getValue();
   }
 
   public isSharp(): boolean {
