@@ -4,7 +4,7 @@ import { Note } from './note';
 
 /*
 
-  Position values
+  Semitone values
 
   |  | | | |  |  | | | | |1|  |
   |  |1| |3|  |  |6| |8| |0|  |
@@ -14,20 +14,20 @@ import { Note } from './note';
   +---+---+---+---+---+---+---+
 
 */
-export class Position {
+export class Semitone {
   private value: number;
 
   private constructor(value: number) {
     this.value = value;
   }
 
-  public static from(name: NoteName, alteration: NoteAlteration): Position {
+  public static from(name: NoteName, alteration: NoteAlteration): Semitone {
     const baseValue = this.lookupBaseValue(name);
     const alterationOffset = this.lookupAlterationOffset(alteration);
 
     const value = (baseValue + alterationOffset + Note.Count) % Note.Count;
 
-    return new Position(value);
+    return new Semitone(value);
   }
 
   private static baseValues = {

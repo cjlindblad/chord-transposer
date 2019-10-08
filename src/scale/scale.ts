@@ -15,26 +15,26 @@ export class Scale {
 
       const nextInterval = this.intervals[i];
 
-      const prevPosition = prevNote.getPosition();
-      const nextPosition = (prevPosition + nextInterval) % Note.Count;
-      const nextPositionCandidate = nextNoteCandidate.getPosition();
+      const prevSemitone = prevNote.getSemitoneValue();
+      const nextSemitone = (prevSemitone + nextInterval) % Note.Count;
+      const nextSemitoneCandidate = nextNoteCandidate.getSemitoneValue();
 
-      if (nextPositionCandidate === nextPosition) {
+      if (nextSemitoneCandidate === nextSemitone) {
         this.notes.push(nextNoteCandidate);
-      } else if ((nextPositionCandidate + 1) % Note.Count === nextPosition) {
+      } else if ((nextSemitoneCandidate + 1) % Note.Count === nextSemitone) {
         this.notes.push(nextNoteCandidate.toSharp());
-      } else if ((nextPositionCandidate + 2) % Note.Count === nextPosition) {
+      } else if ((nextSemitoneCandidate + 2) % Note.Count === nextSemitone) {
         this.notes.push(nextNoteCandidate.toDoubleSharp());
       } else if (
-        (((nextPositionCandidate - 1) % Note.Count) + Note.Count) %
+        (((nextSemitoneCandidate - 1) % Note.Count) + Note.Count) %
           Note.Count ===
-        nextPosition
+        nextSemitone
       ) {
         this.notes.push(nextNoteCandidate.toFlat());
       } else if (
-        (((nextPositionCandidate - 2) % Note.Count) + Note.Count) %
+        (((nextSemitoneCandidate - 2) % Note.Count) + Note.Count) %
           Note.Count ===
-        nextPosition
+        nextSemitone
       ) {
         this.notes.push(nextNoteCandidate.toDoubleFlat());
       } else {

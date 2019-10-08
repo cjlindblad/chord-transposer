@@ -1,13 +1,13 @@
 import { NoteName } from './noteName';
 import { NoteAlteration } from './noteAlteration';
-import { Position } from './position';
+import { Semitone } from './semitone';
 
 export class Note {
   static readonly Count = 12;
 
   private name: NoteName;
   private modifier: NoteAlteration;
-  private position: Position;
+  private semiTone: Semitone;
 
   public constructor(
     name: NoteName,
@@ -15,11 +15,11 @@ export class Note {
   ) {
     this.name = name;
     this.modifier = modifier;
-    this.position = Position.from(name, modifier);
+    this.semiTone = Semitone.from(name, modifier);
   }
 
-  public getPosition(): number {
-    return this.position.getValue();
+  public getSemitoneValue(): number {
+    return this.semiTone.getValue();
   }
 
   public isSharp(): boolean {
