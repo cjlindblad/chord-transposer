@@ -1,5 +1,5 @@
-import { Note } from "../note/note";
-import { Third, IntervalAlteration } from "../interval/interval";
+import { Note } from '../note/note';
+import { Interval, Third } from '../interval/interval';
 
 export class Chord {
   private base: Note;
@@ -10,13 +10,13 @@ export class Chord {
     this.third = third;
   }
 
-  public static from(base: Note, third: Third = IntervalAlteration.Major) {
+  public static from(base: Note, third: Third = Interval.MajorThird): Chord {
     return new Chord(base, third);
   }
 
   public toString(): string {
     const chordName = this.base.toString();
-    const third = this.third === IntervalAlteration.Minor ? 'm' : '';
+    const third = this.third === Interval.MinorThird ? 'm' : '';
 
     return `${chordName}${third}`;
   }
