@@ -1,46 +1,19 @@
 import { Note } from '../note/note';
 import { Mode, ModeIntervals } from './mode';
+import { Interval } from '../interval/interval';
 
 export class Scale {
   private notes: Note[] = [];
-  private intervals: number[];
+  private intervals: Interval[];
 
   private constructor(base: Note, mode: Mode) {
     this.intervals = ModeIntervals[mode];
     this.notes.push(base);
 
-    for (let i = 0; i < this.intervals.length; i++) {
+    this.intervals.forEach(interval => {
       const prevNote = this.notes[this.notes.length - 1];
-      const nextNoteCandidate = prevNote.toNext();
-
-      const nextInterval = this.intervals[i];
-
-      const prevSemitone = prevNote.getSemitoneValue();
-      const nextSemitone = (prevSemitone + nextInterval) % Note.Count;
-      const nextSemitoneCandidate = nextNoteCandidate.getSemitoneValue();
-
-      if (nextSemitoneCandidate === nextSemitone) {
-        this.notes.push(nextNoteCandidate);
-      } else if ((nextSemitoneCandidate + 1) % Note.Count === nextSemitone) {
-        this.notes.push(nextNoteCandidate.toSharp());
-      } else if ((nextSemitoneCandidate + 2) % Note.Count === nextSemitone) {
-        this.notes.push(nextNoteCandidate.toDoubleSharp());
-      } else if (
-        (((nextSemitoneCandidate - 1) % Note.Count) + Note.Count) %
-          Note.Count ===
-        nextSemitone
-      ) {
-        this.notes.push(nextNoteCandidate.toFlat());
-      } else if (
-        (((nextSemitoneCandidate - 2) % Note.Count) + Note.Count) %
-          Note.Count ===
-        nextSemitone
-      ) {
-        this.notes.push(nextNoteCandidate.toDoubleFlat());
-      } else {
-        throw new Error(`Illegal interval`);
-      }
-    }
+      this.notes.push(prevNote.plusInterval(interval));
+    });
   }
 
   public static from(base: Note, mode: Mode = Mode.Ionian): Scale {

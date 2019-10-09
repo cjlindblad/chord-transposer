@@ -1,6 +1,7 @@
 import { NoteName } from './noteName';
 import { NoteAlteration } from './noteAlteration';
 import { Semitone } from './semitone';
+import { Interval } from '../interval/interval';
 
 export class Note {
   static readonly Count = 12;
@@ -60,6 +61,67 @@ export class Note {
 
   public toNatural(): Note {
     return new Note(this.name, NoteAlteration.Natural);
+  }
+
+  public plusInterval(interval: Interval): Note {
+    let noteSteps = 0;
+    let semitones = 0;
+
+    switch (interval) {
+      case Interval.MinorSecond:
+        noteSteps = 1;
+        semitones = 1;
+        break;
+      case Interval.MajorSecond:
+        noteSteps = 1;
+        semitones = 2;
+        break;
+      case Interval.MinorThird:
+        noteSteps = 2;
+        semitones = 3;
+        break;
+      case Interval.MajorThird:
+        noteSteps = 2;
+        semitones = 4;
+        break;
+      default:
+        throw new Error('not implemented');
+    }
+
+    let nextNote = new Note(this.name, this.modifier);
+    for (let i = 0; i < noteSteps; i++) {
+      nextNote = nextNote.toNext();
+    }
+
+    const nextSemitoneValue =
+      (this.getSemitoneValue() + semitones) % Note.Count;
+    const nextSemitoneCandidateValue = nextNote.getSemitoneValue();
+
+    if (nextSemitoneCandidateValue === nextSemitoneValue) {
+      return nextNote;
+    } else if (
+      (nextSemitoneCandidateValue + 1) % Note.Count ===
+      nextSemitoneValue
+    ) {
+      return nextNote.toSharp();
+    } else if (
+      (nextSemitoneCandidateValue + 2) % Note.Count ===
+      nextSemitoneValue
+    ) {
+      return nextNote.toDoubleSharp();
+    } else if (
+      (nextSemitoneCandidateValue - 1 + Note.Count) % Note.Count ===
+      nextSemitoneValue
+    ) {
+      return nextNote.toFlat();
+    } else if (
+      (nextSemitoneCandidateValue - 2 + Note.Count) % Note.Count ===
+      nextSemitoneValue
+    ) {
+      return nextNote.toDoubleFlat();
+    } else {
+      throw new Error(`Illegal interval (${this.toString()} plus ${interval})`);
+    }
   }
 
   public toNext(): Note {

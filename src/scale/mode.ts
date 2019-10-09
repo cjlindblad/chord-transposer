@@ -1,3 +1,5 @@
+import { Interval } from '../interval/interval';
+
 export enum Mode {
   Ionian,
   Dorian,
@@ -9,11 +11,60 @@ export enum Mode {
 }
 
 export const ModeIntervals = {
-  [Mode.Ionian]: [2, 2, 1, 2, 2, 2],
-  [Mode.Dorian]: [2, 1, 2, 2, 2, 1],
-  [Mode.Phrygian]: [1, 2, 2, 2, 1, 2],
-  [Mode.Lydian]: [2, 2, 2, 1, 2, 2],
-  [Mode.Mixolydian]: [2, 2, 1, 2, 2, 1],
-  [Mode.Aeolian]: [2, 1, 2, 2, 1, 2],
-  [Mode.Locrian]: [1, 2, 2, 1, 2, 2]
+  [Mode.Ionian]: [
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond
+  ],
+  [Mode.Dorian]: [
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond
+  ],
+  [Mode.Phrygian]: [
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond
+  ],
+  [Mode.Lydian]: [
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond
+  ],
+  [Mode.Mixolydian]: [
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond
+  ],
+  [Mode.Aeolian]: [
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond
+  ],
+  [Mode.Locrian]: [
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond,
+    Interval.MinorSecond,
+    Interval.MajorSecond,
+    Interval.MajorSecond
+  ]
 };
