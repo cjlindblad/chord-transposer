@@ -1,6 +1,7 @@
 import { NoteName } from './noteName';
 import { Note } from './note';
 import { NoteAlteration } from './noteAlteration';
+import { Interval } from '../interval/interval';
 
 describe('note creation', () => {
   it('is created as natural by default', () => {
@@ -115,5 +116,19 @@ describe('note alteration', () => {
     expect(fNatural.toString()).toEqual('F');
     expect(dNatural.isNatural()).toEqual(true);
     expect(dNatural.toString()).toEqual('D');
+  });
+
+  it('can create next note by adding interval', () => {
+    const c = new Note(NoteName.C);
+
+    const dFlat = c.plusInterval(Interval.MinorSecond);
+    const d = c.plusInterval(Interval.MajorSecond);
+    const eFlat = c.plusInterval(Interval.MinorThird);
+    const e = c.plusInterval(Interval.MajorThird);
+
+    expect(dFlat.toString()).toEqual('Db');
+    expect(d.toString()).toEqual('D');
+    expect(eFlat.toString()).toEqual('Eb');
+    expect(e.toString()).toEqual('E');
   });
 });
