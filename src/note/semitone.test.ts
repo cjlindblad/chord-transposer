@@ -4,9 +4,9 @@ import { NoteAlteration } from './noteAlteration';
 
 describe('note semitone value', () => {
   it('has a correct semitone value for c variants', () => {
-    const c = new Note(NoteName.C);
-    const cSharp = new Note(NoteName.C, NoteAlteration.Sharp);
-    const cFlat = new Note(NoteName.C, NoteAlteration.Flat);
+    const c = Note.from(NoteName.C);
+    const cSharp = Note.from(NoteName.C, NoteAlteration.Sharp);
+    const cFlat = Note.from(NoteName.C, NoteAlteration.Flat);
 
     expect(c.getSemitoneValue()).toEqual(0);
     expect(cSharp.getSemitoneValue()).toEqual(1);
@@ -14,9 +14,9 @@ describe('note semitone value', () => {
   });
 
   it('has a correct semitone value for b variants', () => {
-    const b = new Note(NoteName.B);
-    const bSharp = new Note(NoteName.B, NoteAlteration.Sharp);
-    const bFlat = new Note(NoteName.B, NoteAlteration.Flat);
+    const b = Note.from(NoteName.B);
+    const bSharp = Note.from(NoteName.B, NoteAlteration.Sharp);
+    const bFlat = Note.from(NoteName.B, NoteAlteration.Flat);
 
     expect(b.getSemitoneValue()).toEqual(11);
     expect(bSharp.getSemitoneValue()).toEqual(0);
@@ -24,9 +24,9 @@ describe('note semitone value', () => {
   });
 
   it('has a correct semitone value for e variants', () => {
-    const e = new Note(NoteName.E);
-    const eSharp = new Note(NoteName.E, NoteAlteration.Sharp);
-    const eFlat = new Note(NoteName.E, NoteAlteration.Flat);
+    const e = Note.from(NoteName.E);
+    const eSharp = Note.from(NoteName.E, NoteAlteration.Sharp);
+    const eFlat = Note.from(NoteName.E, NoteAlteration.Flat);
 
     expect(e.getSemitoneValue()).toEqual(4);
     expect(eSharp.getSemitoneValue()).toEqual(5);
@@ -34,9 +34,9 @@ describe('note semitone value', () => {
   });
 
   it('has a correct semitone valute for f variants', () => {
-    const f = new Note(NoteName.F);
-    const fSharp = new Note(NoteName.F, NoteAlteration.Sharp);
-    const fFlat = new Note(NoteName.F, NoteAlteration.Flat);
+    const f = Note.from(NoteName.F);
+    const fSharp = Note.from(NoteName.F, NoteAlteration.Sharp);
+    const fFlat = Note.from(NoteName.F, NoteAlteration.Flat);
 
     expect(f.getSemitoneValue()).toEqual(5);
     expect(fSharp.getSemitoneValue()).toEqual(6);

@@ -10,13 +10,17 @@ export class Note {
   private modifier: NoteAlteration;
   private semiTone: Semitone;
 
-  public constructor(
-    name: NoteName,
-    modifier: NoteAlteration = NoteAlteration.Natural
-  ) {
+  private constructor(name: NoteName, modifier: NoteAlteration) {
     this.name = name;
     this.modifier = modifier;
     this.semiTone = Semitone.from(name, modifier);
+  }
+
+  public static from(
+    name: NoteName,
+    modifier: NoteAlteration = NoteAlteration.Natural
+  ): Note {
+    return Note.from(name, modifier);
   }
 
   public getSemitoneValue(): number {
@@ -44,23 +48,23 @@ export class Note {
   }
 
   public toSharp(): Note {
-    return new Note(this.name, NoteAlteration.Sharp);
+    return Note.from(this.name, NoteAlteration.Sharp);
   }
 
   public toDoubleSharp(): Note {
-    return new Note(this.name, NoteAlteration.DoubleSharp);
+    return Note.from(this.name, NoteAlteration.DoubleSharp);
   }
 
   public toFlat(): Note {
-    return new Note(this.name, NoteAlteration.Flat);
+    return Note.from(this.name, NoteAlteration.Flat);
   }
 
   public toDoubleFlat(): Note {
-    return new Note(this.name, NoteAlteration.DoubleFlat);
+    return Note.from(this.name, NoteAlteration.DoubleFlat);
   }
 
   public toNatural(): Note {
-    return new Note(this.name, NoteAlteration.Natural);
+    return Note.from(this.name, NoteAlteration.Natural);
   }
 
   public plusInterval(interval: Interval): Note {
@@ -88,7 +92,7 @@ export class Note {
         throw new Error('not implemented');
     }
 
-    let nextNote = new Note(this.name, this.modifier);
+    let nextNote = Note.from(this.name, this.modifier);
     for (let i = 0; i < noteSteps; i++) {
       nextNote = nextNote.toNext();
     }
@@ -153,7 +157,7 @@ export class Note {
         throw new Error('Invariant - invalid note name');
     }
 
-    return new Note(nextNoteName);
+    return Note.from(nextNoteName);
   }
 
   public toString(): string {

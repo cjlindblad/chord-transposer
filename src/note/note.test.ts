@@ -5,8 +5,8 @@ import { Interval } from '../interval/interval';
 
 describe('note creation', () => {
   it('is created as natural by default', () => {
-    const a = new Note(NoteName.A);
-    const b = new Note(NoteName.B);
+    const a = Note.from(NoteName.A);
+    const b = Note.from(NoteName.B);
 
     expect(a.toString()).toEqual('A');
     expect(a.isNatural()).toEqual(true);
@@ -15,8 +15,8 @@ describe('note creation', () => {
   });
 
   it('can be sharp', () => {
-    const cSharp = new Note(NoteName.C, NoteAlteration.Sharp);
-    const bSharp = new Note(NoteName.B, NoteAlteration.Sharp);
+    const cSharp = Note.from(NoteName.C, NoteAlteration.Sharp);
+    const bSharp = Note.from(NoteName.B, NoteAlteration.Sharp);
 
     expect(cSharp.isSharp()).toEqual(true);
     expect(cSharp.toString()).toEqual('C#');
@@ -25,8 +25,8 @@ describe('note creation', () => {
   });
 
   it('can be double sharp', () => {
-    const cDoubleSharp = new Note(NoteName.C, NoteAlteration.DoubleSharp);
-    const bDoubleSharp = new Note(NoteName.B, NoteAlteration.DoubleSharp);
+    const cDoubleSharp = Note.from(NoteName.C, NoteAlteration.DoubleSharp);
+    const bDoubleSharp = Note.from(NoteName.B, NoteAlteration.DoubleSharp);
 
     expect(cDoubleSharp.isDoubleSharp()).toEqual(true);
     expect(cDoubleSharp.toString()).toEqual('Cx');
@@ -35,8 +35,8 @@ describe('note creation', () => {
   });
 
   it('can be flat', () => {
-    const bFlat = new Note(NoteName.B, NoteAlteration.Flat);
-    const fFlat = new Note(NoteName.F, NoteAlteration.Flat);
+    const bFlat = Note.from(NoteName.B, NoteAlteration.Flat);
+    const fFlat = Note.from(NoteName.F, NoteAlteration.Flat);
 
     expect(bFlat.isFlat()).toEqual(true);
     expect(bFlat.toString()).toEqual('Bb');
@@ -45,8 +45,8 @@ describe('note creation', () => {
   });
 
   it('can be double flat', () => {
-    const bDoubleFlat = new Note(NoteName.B, NoteAlteration.DoubleFlat);
-    const fDoubleFlat = new Note(NoteName.F, NoteAlteration.DoubleFlat);
+    const bDoubleFlat = Note.from(NoteName.B, NoteAlteration.DoubleFlat);
+    const fDoubleFlat = Note.from(NoteName.F, NoteAlteration.DoubleFlat);
 
     expect(bDoubleFlat.isDoubleFlat()).toEqual(true);
     expect(bDoubleFlat.toString()).toEqual('Bbb');
@@ -57,7 +57,7 @@ describe('note creation', () => {
 
 describe('note alteration', () => {
   it('can be sharpened', () => {
-    const naturalC = new Note(NoteName.C);
+    const naturalC = Note.from(NoteName.C);
 
     const cSharp = naturalC.toSharp();
 
@@ -66,7 +66,7 @@ describe('note alteration', () => {
   });
 
   it('can be double sharpened', () => {
-    const naturalC = new Note(NoteName.C);
+    const naturalC = Note.from(NoteName.C);
 
     const cDoubleSharp = naturalC.toDoubleSharp();
 
@@ -75,7 +75,7 @@ describe('note alteration', () => {
   });
 
   it('can be flattened', () => {
-    const naturalE = new Note(NoteName.E);
+    const naturalE = Note.from(NoteName.E);
 
     const eFlat = naturalE.toFlat();
 
@@ -84,7 +84,7 @@ describe('note alteration', () => {
   });
 
   it('can be double flattened', () => {
-    const naturalE = new Note(NoteName.E);
+    const naturalE = Note.from(NoteName.E);
 
     const eDoubleFlat = naturalE.toDoubleFlat();
 
@@ -93,7 +93,7 @@ describe('note alteration', () => {
   });
 
   it('can be naturalized', () => {
-    const fSharp = new Note(NoteName.F, NoteAlteration.Sharp);
+    const fSharp = Note.from(NoteName.F, NoteAlteration.Sharp);
 
     const fNatural = fSharp.toNatural();
 
@@ -102,9 +102,9 @@ describe('note alteration', () => {
   });
 
   it('can create next natural note', () => {
-    const aNatural = new Note(NoteName.A);
-    const eSharp = new Note(NoteName.E, NoteAlteration.Sharp);
-    const cFlat = new Note(NoteName.C, NoteAlteration.Flat);
+    const aNatural = Note.from(NoteName.A);
+    const eSharp = Note.from(NoteName.E, NoteAlteration.Sharp);
+    const cFlat = Note.from(NoteName.C, NoteAlteration.Flat);
 
     const bNatural = aNatural.toNext();
     const fNatural = eSharp.toNext();
@@ -119,7 +119,7 @@ describe('note alteration', () => {
   });
 
   it('can create next note by adding interval', () => {
-    const c = new Note(NoteName.C);
+    const c = Note.from(NoteName.C);
 
     const dFlat = c.plusInterval(Interval.MinorSecond);
     const d = c.plusInterval(Interval.MajorSecond);
