@@ -10,7 +10,8 @@ export enum Interval {
   MinorSixth = 8,
   MajorSixth = 9,
   MinorSeventh = 10,
-  MajorSeventh = 11
+  MajorSeventh = 11,
 }
 
 export type Third = Interval.MinorThird | Interval.MajorThird;
+export type Fifth = Interval.Fifth;

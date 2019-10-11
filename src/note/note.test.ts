@@ -121,10 +121,10 @@ describe('note alteration', () => {
   it('can create next note by adding interval', () => {
     const c = Note.from(NoteName.C);
 
-    const dFlat = c.plusInterval(Interval.MinorSecond);
-    const d = c.plusInterval(Interval.MajorSecond);
-    const eFlat = c.plusInterval(Interval.MinorThird);
-    const e = c.plusInterval(Interval.MajorThird);
+    const dFlat = c.addInterval(Interval.MinorSecond);
+    const d = c.addInterval(Interval.MajorSecond);
+    const eFlat = c.addInterval(Interval.MinorThird);
+    const e = c.addInterval(Interval.MajorThird);
 
     expect(dFlat.toString()).toEqual('Db');
     expect(d.toString()).toEqual('D');

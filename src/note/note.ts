@@ -20,7 +20,7 @@ export class Note {
     name: NoteName,
     modifier: NoteAlteration = NoteAlteration.Natural
   ): Note {
-    return Note.from(name, modifier);
+    return new Note(name, modifier);
   }
 
   public getSemitoneValue(): number {
@@ -67,7 +67,7 @@ export class Note {
     return Note.from(this.name, NoteAlteration.Natural);
   }
 
-  public plusInterval(interval: Interval): Note {
+  public addInterval(interval: Interval): Note {
     let noteSteps = 0;
     let semitones = 0;
 
@@ -87,6 +87,34 @@ export class Note {
       case Interval.MajorThird:
         noteSteps = 2;
         semitones = 4;
+        break;
+      case Interval.Fourth:
+        noteSteps = 3;
+        semitones = 5;
+        break;
+      case Interval.AugmentedFourth:
+        noteSteps = 3;
+        semitones = 6;
+        break;
+      case Interval.Fifth:
+        noteSteps = 4;
+        semitones = 7;
+        break;
+      case Interval.MinorSixth:
+        noteSteps = 5;
+        semitones = 8;
+        break;
+      case Interval.MajorSixth:
+        noteSteps = 5;
+        semitones = 9;
+        break;
+      case Interval.MinorSeventh:
+        noteSteps = 6;
+        semitones = 10;
+        break;
+      case Interval.MajorSeventh:
+        noteSteps = 6;
+        semitones = 11;
         break;
       default:
         throw new Error('not implemented');

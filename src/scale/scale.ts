@@ -12,7 +12,7 @@ export class Scale {
 
     this.intervals.forEach(interval => {
       const prevNote = this.notes[this.notes.length - 1];
-      this.notes.push(prevNote.plusInterval(interval));
+      this.notes.push(prevNote.addInterval(interval));
     });
   }
 
