@@ -14,7 +14,7 @@ describe('chord creation', () => {
 
   it('creates a minor chord', () => {
     const c = Note.from(NoteName.C);
-    const cMinor = Chord.from(c, Interval.MinorThird);
+    const cMinor = Chord.from(c, { third: Interval.MinorThird });
 
     expect(cMinor.toString()).toEqual('Cm');
   });
@@ -54,23 +54,23 @@ describe('chord notes', () => {
 
   it('lists the notes in minor chords', () => {
     const c = Note.from(NoteName.C);
-    const cMinor = Chord.from(c, Interval.MinorThird);
+    const cMinor = Chord.from(c, { third: Interval.MinorThird });
     const cMinorNotes = cMinor.getNotes();
 
     const b = Note.from(NoteName.B);
-    const bMinor = Chord.from(b, Interval.MinorThird);
+    const bMinor = Chord.from(b, { third: Interval.MinorThird });
     const bMinorNotes = bMinor.getNotes();
 
     const eFlat = Note.from(NoteName.E, NoteAlteration.Flat);
-    const eFlatMinor = Chord.from(eFlat, Interval.MinorThird);
+    const eFlatMinor = Chord.from(eFlat, { third: Interval.MinorThird });
     const eFlatMinorNotes = eFlatMinor.getNotes();
 
     const gSharp = Note.from(NoteName.G, NoteAlteration.Sharp);
-    const gSharpMinor = Chord.from(gSharp, Interval.MinorThird);
+    const gSharpMinor = Chord.from(gSharp, { third: Interval.MinorThird });
     const gSharpMinorNotes = gSharpMinor.getNotes();
 
     const gFlat = Note.from(NoteName.G, NoteAlteration.Flat);
-    const gFlatMinor = Chord.from(gFlat, Interval.MinorThird);
+    const gFlatMinor = Chord.from(gFlat, { third: Interval.MinorThird });
     const gFlatMinorNotes = gFlatMinor.getNotes();
 
     expect(noteString(cMinorNotes)).toEqual('CEbG');

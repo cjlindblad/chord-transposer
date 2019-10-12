@@ -1,19 +1,44 @@
 import { Note } from '../note/note';
-import { Interval, Third, Fifth } from '../interval/interval';
+import { Interval, Third, Fifth, Seventh } from '../interval/interval';
+
+export interface ChordIntervals {
+  third: Third;
+  fifth?: Fifth;
+  seventh?: Seventh;
+}
+
+const defaultIntervals: ChordIntervals = {
+  third: Interval.MajorThird,
+  fifth: Interval.Fifth,
+};
 
 export class Chord {
   private base: Note;
   private third: Third;
   private fifth: Fifth;
+  private seventh?: Seventh;
 
-  private constructor(base: Note, third: Third, fifth: Fifth = Interval.Fifth) {
+  private constructor(
+    base: Note,
+    third: Third,
+    fifth: Fifth,
+    seventh: Seventh | undefined
+  ) {
     this.base = base;
     this.third = third;
     this.fifth = fifth;
+    this.seventh = seventh;
   }
 
-  public static from(base: Note, third: Third = Interval.MajorThird): Chord {
-    return new Chord(base, third);
+  public static from(
+    base: Note,
+    intervals: ChordIntervals = defaultIntervals
+  ): Chord {
+    // set default values
+    intervals.third = intervals.third || Interval.MajorThird;
+    intervals.fifth = intervals.fifth || Interval.Fifth;
+
+    return new Chord(base, intervals.third, intervals.fifth, intervals.seventh);
   }
 
   public getNotes(): Note[] {
