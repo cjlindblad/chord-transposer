@@ -51,4 +51,32 @@ describe('chord notes', () => {
     expect(noteString(gSharpMajorNotes)).toEqual('G#B#D#');
     expect(noteString(gFlatMajorNotes)).toEqual('GbBbDb');
   });
+
+  it('lists the notes in minor chords', () => {
+    const c = Note.from(NoteName.C);
+    const cMinor = Chord.from(c, Interval.MinorThird);
+    const cMinorNotes = cMinor.getNotes();
+
+    const b = Note.from(NoteName.B);
+    const bMinor = Chord.from(b, Interval.MinorThird);
+    const bMinorNotes = bMinor.getNotes();
+
+    const eFlat = Note.from(NoteName.E, NoteAlteration.Flat);
+    const eFlatMinor = Chord.from(eFlat, Interval.MinorThird);
+    const eFlatMinorNotes = eFlatMinor.getNotes();
+
+    const gSharp = Note.from(NoteName.G, NoteAlteration.Sharp);
+    const gSharpMinor = Chord.from(gSharp, Interval.MinorThird);
+    const gSharpMinorNotes = gSharpMinor.getNotes();
+
+    const gFlat = Note.from(NoteName.G, NoteAlteration.Flat);
+    const gFlatMinor = Chord.from(gFlat, Interval.MinorThird);
+    const gFlatMinorNotes = gFlatMinor.getNotes();
+
+    expect(noteString(cMinorNotes)).toEqual('CEbG');
+    expect(noteString(bMinorNotes)).toEqual('BDF#');
+    expect(noteString(eFlatMinorNotes)).toEqual('EbGbBb');
+    expect(noteString(gSharpMinorNotes)).toEqual('G#BD#');
+    expect(noteString(gFlatMinorNotes)).toEqual('GbBbbDb');
+  });
 });
