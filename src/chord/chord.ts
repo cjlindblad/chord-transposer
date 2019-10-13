@@ -2,7 +2,7 @@ import { Note } from '../note/note';
 import { Interval, Third, Fifth, Seventh } from '../interval/interval';
 
 export interface ChordIntervals {
-  third: Third;
+  third?: Third;
   fifth?: Fifth;
   seventh?: Seventh;
 }
@@ -45,6 +45,9 @@ export class Chord {
     const notes = [this.base];
     notes.push(this.base.addInterval(this.third));
     notes.push(this.base.addInterval(this.fifth));
+    if (this.seventh) {
+      notes.push(this.base.addInterval(this.seventh));
+    }
 
     return notes;
   }
@@ -52,7 +55,13 @@ export class Chord {
   public toString(): string {
     const chordName = this.base.toString();
     const third = this.third === Interval.MinorThird ? 'm' : '';
+    const seventh =
+      this.seventh === Interval.MinorSeventh
+        ? '7'
+        : this.seventh === Interval.MajorSeventh
+        ? 'maj7'
+        : '';
 
-    return `${chordName}${third}`;
+    return `${chordName}${third}${seventh}`;
   }
 }
