@@ -116,8 +116,6 @@ export class Note {
         noteSteps = 6;
         semitones = 11;
         break;
-      default:
-        throw new Error('not implemented');
     }
 
     let nextNote = Note.from(this.name, this.modifier);
@@ -157,35 +155,22 @@ export class Note {
   }
 
   public toNext(): Note {
-    let nextNoteName: NoteName;
-
     switch (this.name) {
       case NoteName.A:
-        nextNoteName = NoteName.B;
-        break;
+        return Note.from(NoteName.B);
       case NoteName.B:
-        nextNoteName = NoteName.C;
-        break;
+        return Note.from(NoteName.C);
       case NoteName.C:
-        nextNoteName = NoteName.D;
-        break;
+        return Note.from(NoteName.D);
       case NoteName.D:
-        nextNoteName = NoteName.E;
-        break;
+        return Note.from(NoteName.E);
       case NoteName.E:
-        nextNoteName = NoteName.F;
-        break;
+        return Note.from(NoteName.F);
       case NoteName.F:
-        nextNoteName = NoteName.G;
-        break;
+        return Note.from(NoteName.G);
       case NoteName.G:
-        nextNoteName = NoteName.A;
-        break;
-      default:
-        throw new Error('Invariant - invalid note name');
+        return Note.from(NoteName.A);
     }
-
-    return Note.from(nextNoteName);
   }
 
   public toString(): string {

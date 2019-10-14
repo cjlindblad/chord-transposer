@@ -58,6 +58,20 @@ describe('chord notes', () => {
   const noteString = (notes: Note[]): string =>
     notes.map(note => note.toString()).join('');
 
+  describe('illegal chords notes', () => {
+    it('crashes on chords requiring triple sharps', () => {
+      const note = Note.from(NoteName.D, NoteAlteration.DoubleSharp);
+      const chord = Chord.from(note);
+      expect(chord.getNotes).toThrow();
+    });
+
+    it('crashes on chords requiring triple flats', () => {
+      const note = Note.from(NoteName.C, NoteAlteration.DoubleFlat);
+      const chord = Chord.from(note);
+      expect(chord.getNotes).toThrow();
+    });
+  });
+
   describe('major chord notes', () => {
     it('lists notes in C', () => {
       const c = Note.from(NoteName.C);
