@@ -20,6 +20,12 @@ describe('chord parser', () => {
 
       expect(() => ChordParser.parse(input)).toThrow();
     });
+
+    it('throws on invalid alteration character', () => {
+      const input = 'C!';
+
+      expect(() => ChordParser.parse(input)).toThrow();
+    });
   });
 
   describe('single character chords', () => {
@@ -45,6 +51,16 @@ describe('chord parser', () => {
       const chord = ChordParser.parse(input);
 
       expect(notesString(chord)).toEqual('CEG');
+    });
+  });
+
+  describe('minor chords', () => {
+    it('parses a c minor chord', () => {
+      const input = 'Cm';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('CEbG');
     });
   });
 
