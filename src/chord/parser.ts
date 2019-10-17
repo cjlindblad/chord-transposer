@@ -1,6 +1,7 @@
 import { Chord } from './chord';
 import { Note } from '../note/note';
 import { NoteName } from '../note/noteName';
+import { NoteAlteration } from '../note/noteAlteration';
 
 class ChordParser {
   private constructor() {}
@@ -25,7 +26,26 @@ class ChordParser {
       throw new Error('Invalid base note character');
     }
 
-    const note = Note.from(NoteName[baseCharacter]);
+    let alteration: NoteAlteration | undefined = undefined;
+    if (input.length >= 2) {
+      const alterationCharacter = input[1];
+
+      switch (alterationCharacter) {
+        case '#':
+          alteration = NoteAlteration.Sharp;
+          break;
+        case 'b':
+          alteration = NoteAlteration.Flat;
+          break;
+        default:
+          throw new Error('Invalid alteration character');
+      }
+    }
+
+    const note =
+      alteration !== undefined
+        ? Note.from(NoteName[baseCharacter], alteration)
+        : Note.from(NoteName[baseCharacter]);
 
     return Chord.from(note);
   }

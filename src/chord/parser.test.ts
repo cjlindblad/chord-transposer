@@ -8,17 +8,77 @@ const notesString = (chord: Chord): string =>
     .join('');
 
 describe('chord parser', () => {
-  it('throws when parsing empty string', () => {
-    expect(() => ChordParser.parse('')).toThrow();
+  describe('invalid input', () => {
+    it('throws when parsing empty string', () => {
+      const input = '';
+
+      expect(() => ChordParser.parse(input)).toThrow();
+    });
+
+    it('throws when parsing string starting with non note character', () => {
+      const input = 'X';
+
+      expect(() => ChordParser.parse(input)).toThrow();
+    });
   });
 
-  it('throws when parsing string starting with non note character', () => {
-    expect(() => ChordParser.parse('X')).toThrow();
+  describe('single character chords', () => {
+    it('parses a c major chord', () => {
+      const input = 'C';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('CEG');
+    });
+
+    it('parses a b major chord', () => {
+      const input = 'B';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('BD#F#');
+    });
+
+    it('parses lower case c major chord', () => {
+      const input = 'c';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('CEG');
+    });
   });
 
-  it('parses a c major chord', () => {
-    const chord = ChordParser.parse('C');
+  describe('chords with alteration characters', () => {
+    it('parses a c# major chord', () => {
+      const input = 'C#';
 
-    expect(notesString(chord)).toEqual('CEG');
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('C#E#G#');
+    });
+
+    it('parses a lower case g# major chord', () => {
+      const input = 'g#';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('G#B#D#');
+    });
+
+    it('parses a lower case cb major chord', () => {
+      const input = 'cb';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('CbEbGb');
+    });
+
+    it('parses Fb major chord', () => {
+      const input = 'Fb';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('FbAbCb');
+    });
   });
 });
