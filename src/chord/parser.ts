@@ -8,6 +8,18 @@ class ChordParser {
   private constructor() {}
 
   public static parse(input: string): Chord {
+    const isBaseNoteCharacter = (char: string) =>
+      char === 'A' ||
+      char === 'B' ||
+      char === 'C' ||
+      char === 'D' ||
+      char === 'E' ||
+      char === 'F' ||
+      char === 'G';
+    const isMinorCharacter = (char: string) => char === 'm';
+    const isAlterationCharacter = (char: string) =>
+      char === '#' || char === 'b';
+
     // TODO write this as a 'real' parser that consumes tokens
     if (input.trim().length === 0) {
       throw new Error('Cannot parse empty string');
@@ -15,16 +27,7 @@ class ChordParser {
 
     const baseCharacter = input[0].toUpperCase();
 
-    // clean this up..
-    if (
-      baseCharacter !== 'A' &&
-      baseCharacter !== 'B' &&
-      baseCharacter !== 'C' &&
-      baseCharacter !== 'D' &&
-      baseCharacter !== 'E' &&
-      baseCharacter !== 'F' &&
-      baseCharacter !== 'G'
-    ) {
+    if (!isBaseNoteCharacter(baseCharacter)) {
       throw new Error('Invalid base note character');
     }
 
@@ -32,27 +35,31 @@ class ChordParser {
     let third: Third = Interval.MajorThird;
 
     if (input.length >= 2) {
-      const alterationCharacter = input[1];
+      const char = input[1];
 
-      switch (alterationCharacter) {
-        case '#':
+      if (isMinorCharacter(char)) {
+        third = Interval.MinorThird;
+      } else if (isAlterationCharacter(char)) {
+        if (char === '#') {
           alteration = NoteAlteration.Sharp;
-          break;
-        case 'b':
+        }
+        if (char === 'b') {
           alteration = NoteAlteration.Flat;
-          break;
-        case 'm':
-          third = Interval.MinorThird;
-          break;
-        default:
-          throw new Error('Invalid alteration character');
+        }
+      } else {
+        throw new Error('Invalid second character');
       }
     }
+    if (input.length >= 3 && isMinorCharacter(input[2])) {
+      third = Interval.MinorThird;
+    }
+
+    type NoteName = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
     const note =
       alteration !== undefined
-        ? Note.from(NoteName[baseCharacter], alteration)
-        : Note.from(NoteName[baseCharacter]);
+        ? Note.from(NoteName[baseCharacter as NoteName], alteration)
+        : Note.from(NoteName[baseCharacter as NoteName]);
 
     return Chord.from(note, { third });
   }

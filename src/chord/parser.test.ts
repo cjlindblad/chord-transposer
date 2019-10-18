@@ -96,5 +96,21 @@ describe('chord parser', () => {
 
       expect(notesString(chord)).toEqual('FbAbCb');
     });
+
+    it('parses a C# minor chord', () => {
+      const input = 'C#m';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('C#EG#');
+    });
+
+    it('parses a Cb minor chord', () => {
+      const input = 'Cbm';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('CbEbbGb');
+    });
   });
 });
