@@ -44,14 +44,6 @@ describe('chord parser', () => {
 
       expect(notesString(chord)).toEqual('BD#F#');
     });
-
-    it('parses lower case c major chord', () => {
-      const input = 'c';
-
-      const chord = ChordParser.parse(input);
-
-      expect(notesString(chord)).toEqual('CEG');
-    });
   });
 
   describe('minor chords', () => {
@@ -73,16 +65,16 @@ describe('chord parser', () => {
       expect(notesString(chord)).toEqual('C#E#G#');
     });
 
-    it('parses a lower case g# major chord', () => {
-      const input = 'g#';
+    it('parses a g# major chord', () => {
+      const input = 'G#';
 
       const chord = ChordParser.parse(input);
 
       expect(notesString(chord)).toEqual('G#B#D#');
     });
 
-    it('parses a lower case cb major chord', () => {
-      const input = 'cb';
+    it('parses a Cb major chord', () => {
+      const input = 'Cb';
 
       const chord = ChordParser.parse(input);
 

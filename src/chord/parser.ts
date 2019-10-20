@@ -5,108 +5,151 @@ import { NoteAlteration } from '../note/noteAlteration';
 import { Third, Interval, Seventh } from '../interval/interval';
 
 class ChordParser {
-  // TODO write this as a 'real' parser that consumes tokens
+  // we have an issue with separating the flat symbol ('b')
+  // and the lower case note name
   public static parse(input: string): Chord {
-    const isBaseNoteCharacter = (char: string) =>
-      char === 'A' ||
-      char === 'B' ||
-      char === 'C' ||
-      char === 'D' ||
-      char === 'E' ||
-      char === 'F' ||
-      char === 'G';
-    const isMinorCharacter = (char: string) => char === 'm';
-    const isAlterationCharacter = (char: string) =>
-      char === '#' || char === 'b';
-    const isSeventhCharacter = (char: string) => char === '7';
-    const hasMajorSeventhSubstring = (input: string) =>
-      input.toLowerCase().indexOf('maj7') !== -1;
-
-    if (input.trim().length === 0) {
-      throw new Error('Cannot parse empty string');
+    enum Token {
+      Note,
+      Alteration,
+      MinorThird,
+      MajorSeventh,
+      MinorSeventh
+    }
+    interface Lexeme {
+      token: Token;
+      value?: string;
     }
 
-    const baseCharacter = input[0].toUpperCase();
+    class Lexemes {
+      private lexemes: Lexeme[];
+      private currentIndex: number;
 
-    if (!isBaseNoteCharacter(baseCharacter)) {
-      throw new Error('Invalid base note character');
+      constructor(lexemes: Lexeme[]) {
+        this.lexemes = lexemes;
+        this.currentIndex = -1;
+      }
+
+      public getNext(): Lexeme {
+        if (this.currentIndex >= this.lexemes.length - 1) {
+          throw new Error('No more lexemes');
+        }
+        return this.lexemes[++this.currentIndex];
+      }
+
+      public hasNext(): boolean {
+        return this.currentIndex < this.lexemes.length - 1;
+      }
     }
+
+    const _lexemes: Lexeme[] = [];
+
+    const NOTES = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
+    for (let i = 0; i < input.length; i++) {
+      const char = input[i];
+
+      if (NOTES.indexOf(char) !== -1) {
+        _lexemes.push({
+          token: Token.Note,
+          value: char
+        });
+        continue;
+      }
+
+      if (i + 4 <= input.length && input.substring(i, i + 4) === 'maj7') {
+        _lexemes.push({
+          token: Token.MajorSeventh
+        });
+        i += 3;
+        continue;
+      }
+
+      if (char === '7') {
+        _lexemes.push({
+          token: Token.MinorSeventh
+        });
+        continue;
+      }
+
+      if (char === 'm') {
+        _lexemes.push({
+          token: Token.MinorThird
+        });
+        continue;
+      }
+
+      if (char === '#' || char === 'b') {
+        _lexemes.push({
+          token: Token.Alteration,
+          value: char
+        });
+        continue;
+      }
+
+      throw new Error(`Unexpected character - ${char})`);
+    }
+
+    const lexemes = new Lexemes(_lexemes);
 
     let alteration: NoteAlteration | undefined = undefined;
     let third: Third = Interval.MajorThird;
     let seventh: Seventh | undefined = undefined;
 
-    if (input.length >= 2) {
-      const secondCharacter = input[1];
+    type Notes = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
-      // this won't handle minor chords with major sevenths.
-      // not an usual chord, but we'll handle that with a
-      // real parser.
+    let currentLexeme: Lexeme;
+    currentLexeme = lexemes.getNext();
 
-      // the if statements are also getting out of hand pretty
-      // fast.
+    if (currentLexeme.token !== Token.Note) {
+      throw new Error('Expected note');
+    }
 
-      let foundMatchingRule = false;
+    const baseNote = NoteName[currentLexeme.value!.toUpperCase() as Notes];
 
-      if (
-        isMinorCharacter(secondCharacter) &&
-        !hasMajorSeventhSubstring(input)
-      ) {
-        third = Interval.MinorThird;
-        foundMatchingRule = true;
-      }
+    if (lexemes.hasNext()) {
+      currentLexeme = lexemes.getNext();
 
-      if (hasMajorSeventhSubstring(input)) {
-        seventh = Interval.MajorSeventh;
-        foundMatchingRule = true;
-      }
-
-      if (
-        isSeventhCharacter(secondCharacter) &&
-        !hasMajorSeventhSubstring(input)
-      ) {
-        seventh = Interval.MinorSeventh;
-        foundMatchingRule = true;
-      }
-
-      if (isAlterationCharacter(secondCharacter)) {
-        if (secondCharacter === '#') {
+      if (currentLexeme.token === Token.Alteration) {
+        if (currentLexeme.value === '#') {
           alteration = NoteAlteration.Sharp;
         }
-        if (secondCharacter === 'b') {
+        if (currentLexeme.value === 'b') {
           alteration = NoteAlteration.Flat;
         }
-        foundMatchingRule = true;
+
+        if (lexemes.hasNext()) {
+          currentLexeme = lexemes.getNext();
+        }
       }
 
-      if (!foundMatchingRule) {
-        throw new Error('Invalid second character');
-      }
-    }
-    if (input.length >= 3) {
-      const thirdCharacter = input[2];
-      if (
-        isMinorCharacter(thirdCharacter) &&
-        !hasMajorSeventhSubstring(input)
-      ) {
+      if (currentLexeme.token === Token.MinorThird) {
         third = Interval.MinorThird;
+
+        if (lexemes.hasNext()) {
+          currentLexeme = lexemes.getNext();
+        }
       }
-      if (isSeventhCharacter(thirdCharacter)) {
-        seventh = Interval.MinorSeventh;
+
+      if (
+        currentLexeme.token === Token.MajorSeventh ||
+        currentLexeme.token === Token.MinorSeventh
+      ) {
+        if (currentLexeme.token === Token.MajorSeventh) {
+          seventh = Interval.MajorSeventh;
+        }
+        if (currentLexeme.token === Token.MinorSeventh) {
+          seventh = Interval.MinorSeventh;
+        }
+        if (lexemes.hasNext()) {
+          currentLexeme = lexemes.getNext();
+        }
       }
     }
-
-    // this doesn't care about ordering..
-    if (hasMajorSeventhSubstring(input)) {
-      seventh = Interval.MajorSeventh;
-    }
-
-    type NoteName = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 
     const note =
       alteration !== undefined
-        ? Note.from(NoteName[baseCharacter as NoteName], alteration)
-        : Note.from(NoteName[baseCharacter as NoteName]);
+        ? Note.from(baseNote, alteration)
+        : Note.from(baseNote);
 
     return seventh !== undefined
       ? Chord.from(note, { third, seventh })
