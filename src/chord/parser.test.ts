@@ -113,4 +113,40 @@ describe('chord parser', () => {
       expect(notesString(chord)).toEqual('CbEbbGb');
     });
   });
+
+  describe('minor 7th chords', () => {
+    it('parses G7 chord', () => {
+      const input = 'G7';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('GBDF');
+    });
+
+    it('parses F#7 chord', () => {
+      const input = 'F#7';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('F#A#C#E');
+    });
+  });
+
+  describe('major 7th chords', () => {
+    it('parses Cmaj7 chord', () => {
+      const input = 'Cmaj7';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('CEGB');
+    });
+
+    it('parses Ebmaj7 chord', () => {
+      const input = 'Ebmaj7';
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual('EbGBbD');
+    });
+  });
 });

@@ -2,11 +2,10 @@ import { Chord } from './chord';
 import { Note } from '../note/note';
 import { NoteName } from '../note/noteName';
 import { NoteAlteration } from '../note/noteAlteration';
-import { Third, Interval } from '../interval/interval';
+import { Third, Interval, Seventh } from '../interval/interval';
 
 class ChordParser {
-  private constructor() {}
-
+  // TODO write this as a 'real' parser that consumes tokens
   public static parse(input: string): Chord {
     const isBaseNoteCharacter = (char: string) =>
       char === 'A' ||
@@ -19,8 +18,10 @@ class ChordParser {
     const isMinorCharacter = (char: string) => char === 'm';
     const isAlterationCharacter = (char: string) =>
       char === '#' || char === 'b';
+    const isSeventhCharacter = (char: string) => char === '7';
+    const hasMajorSeventhSubstring = (input: string) =>
+      input.toLowerCase().indexOf('maj7') !== -1;
 
-    // TODO write this as a 'real' parser that consumes tokens
     if (input.trim().length === 0) {
       throw new Error('Cannot parse empty string');
     }
@@ -33,25 +34,71 @@ class ChordParser {
 
     let alteration: NoteAlteration | undefined = undefined;
     let third: Third = Interval.MajorThird;
+    let seventh: Seventh | undefined = undefined;
 
     if (input.length >= 2) {
-      const char = input[1];
+      const secondCharacter = input[1];
 
-      if (isMinorCharacter(char)) {
+      // this won't handle minor chords with major sevenths.
+      // not an usual chord, but we'll handle that with a
+      // real parser.
+
+      // the if statements are also getting out of hand pretty
+      // fast.
+
+      let foundMatchingRule = false;
+
+      if (
+        isMinorCharacter(secondCharacter) &&
+        !hasMajorSeventhSubstring(input)
+      ) {
         third = Interval.MinorThird;
-      } else if (isAlterationCharacter(char)) {
-        if (char === '#') {
+        foundMatchingRule = true;
+      }
+
+      if (hasMajorSeventhSubstring(input)) {
+        seventh = Interval.MajorSeventh;
+        foundMatchingRule = true;
+      }
+
+      if (
+        isSeventhCharacter(secondCharacter) &&
+        !hasMajorSeventhSubstring(input)
+      ) {
+        seventh = Interval.MinorSeventh;
+        foundMatchingRule = true;
+      }
+
+      if (isAlterationCharacter(secondCharacter)) {
+        if (secondCharacter === '#') {
           alteration = NoteAlteration.Sharp;
         }
-        if (char === 'b') {
+        if (secondCharacter === 'b') {
           alteration = NoteAlteration.Flat;
         }
-      } else {
+        foundMatchingRule = true;
+      }
+
+      if (!foundMatchingRule) {
         throw new Error('Invalid second character');
       }
     }
-    if (input.length >= 3 && isMinorCharacter(input[2])) {
-      third = Interval.MinorThird;
+    if (input.length >= 3) {
+      const thirdCharacter = input[2];
+      if (
+        isMinorCharacter(thirdCharacter) &&
+        !hasMajorSeventhSubstring(input)
+      ) {
+        third = Interval.MinorThird;
+      }
+      if (isSeventhCharacter(thirdCharacter)) {
+        seventh = Interval.MinorSeventh;
+      }
+    }
+
+    // this doesn't care about ordering..
+    if (hasMajorSeventhSubstring(input)) {
+      seventh = Interval.MajorSeventh;
     }
 
     type NoteName = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
@@ -61,7 +108,9 @@ class ChordParser {
         ? Note.from(NoteName[baseCharacter as NoteName], alteration)
         : Note.from(NoteName[baseCharacter as NoteName]);
 
-    return Chord.from(note, { third });
+    return seventh !== undefined
+      ? Chord.from(note, { third, seventh })
+      : Chord.from(note, { third });
   }
 }
 
