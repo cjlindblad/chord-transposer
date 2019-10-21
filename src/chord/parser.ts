@@ -1,8 +1,8 @@
-import { Chord } from './chord';
-import { Note } from '../note/note';
-import { NoteName } from '../note/noteName';
-import { NoteAlteration } from '../note/noteAlteration';
-import { Third, Interval, Seventh } from '../interval/interval';
+import { Chord } from "./chord";
+import { Note } from "../note/note";
+import { NoteName } from "../note/noteName";
+import { NoteAlteration } from "../note/noteAlteration";
+import { Third, Interval, Seventh } from "../interval/interval";
 
 class ChordParser {
   // we have an issue with separating the flat symbol ('b')
@@ -13,7 +13,8 @@ class ChordParser {
       Alteration,
       MinorThird,
       MajorSeventh,
-      MinorSeventh
+      MinorSeventh,
+      EOF
     }
     interface Lexeme {
       token: Token;
@@ -31,7 +32,7 @@ class ChordParser {
 
       public getNext(): Lexeme {
         if (this.currentIndex >= this.lexemes.length - 1) {
-          throw new Error('No more lexemes');
+          throw new Error("No more lexemes");
         }
         return this.lexemes[++this.currentIndex];
       }
@@ -43,7 +44,7 @@ class ChordParser {
 
     const _lexemes: Lexeme[] = [];
 
-    const NOTES = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+    const NOTES = ["A", "B", "C", "D", "E", "F", "G"];
 
     for (let i = 0; i < input.length; i++) {
       const char = input[i];
@@ -56,7 +57,7 @@ class ChordParser {
         continue;
       }
 
-      if (i + 4 <= input.length && input.substring(i, i + 4) === 'maj7') {
+      if (i + 4 <= input.length && input.substring(i, i + 4) === "maj7") {
         _lexemes.push({
           token: Token.MajorSeventh
         });
@@ -64,21 +65,21 @@ class ChordParser {
         continue;
       }
 
-      if (char === '7') {
+      if (char === "7") {
         _lexemes.push({
           token: Token.MinorSeventh
         });
         continue;
       }
 
-      if (char === 'm') {
+      if (char === "m") {
         _lexemes.push({
           token: Token.MinorThird
         });
         continue;
       }
 
-      if (char === '#' || char === 'b') {
+      if (char === "#" || char === "b") {
         _lexemes.push({
           token: Token.Alteration,
           value: char
@@ -89,19 +90,23 @@ class ChordParser {
       throw new Error(`Unexpected character - ${char})`);
     }
 
+    _lexemes.push({
+      token: Token.EOF
+    });
+
     const lexemes = new Lexemes(_lexemes);
 
     let alteration: NoteAlteration | undefined = undefined;
     let third: Third = Interval.MajorThird;
     let seventh: Seventh | undefined = undefined;
 
-    type Notes = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
+    type Notes = "A" | "B" | "C" | "D" | "E" | "F" | "G";
 
     let currentLexeme: Lexeme;
     currentLexeme = lexemes.getNext();
 
     if (currentLexeme.token !== Token.Note) {
-      throw new Error('Expected note');
+      throw new Error("Expected note");
     }
 
     const baseNote = NoteName[currentLexeme.value!.toUpperCase() as Notes];
@@ -110,10 +115,10 @@ class ChordParser {
       currentLexeme = lexemes.getNext();
 
       if (currentLexeme.token === Token.Alteration) {
-        if (currentLexeme.value === '#') {
+        if (currentLexeme.value === "#") {
           alteration = NoteAlteration.Sharp;
         }
-        if (currentLexeme.value === 'b') {
+        if (currentLexeme.value === "b") {
           alteration = NoteAlteration.Flat;
         }
 
@@ -143,6 +148,10 @@ class ChordParser {
         if (lexemes.hasNext()) {
           currentLexeme = lexemes.getNext();
         }
+      }
+
+      if (currentLexeme.token !== Token.EOF) {
+        throw new Error(`Expected EOF - got ${currentLexeme.token}`);
       }
     }
 
