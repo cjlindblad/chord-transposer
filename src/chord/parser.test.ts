@@ -21,7 +21,7 @@ describe("chord parser", () => {
       expect(() => ChordParser.parse(input)).toThrow();
     });
 
-    it("throws on invalid alteration character", () => {
+    it("throws on invalid second character", () => {
       const input = "C!";
 
       expect(() => ChordParser.parse(input)).toThrow();
@@ -29,6 +29,12 @@ describe("chord parser", () => {
 
     it("throws on minor third character before alteration", () => {
       const input = "Cm#";
+
+      expect(() => ChordParser.parse(input)).toThrow();
+    });
+
+    it("throws on seventh character before minor third character", () => {
+      const input = "C7m";
 
       expect(() => ChordParser.parse(input)).toThrow();
     });
@@ -128,6 +134,22 @@ describe("chord parser", () => {
 
       expect(notesString(chord)).toEqual("F#A#C#E");
     });
+
+    it("parses Am7 chord", () => {
+      const input = "Am7";
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual("ACEG");
+    });
+
+    it("parses Cm7 chord", () => {
+      const input = "Cm7";
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual("CEbGBb");
+    });
   });
 
   describe("major 7th chords", () => {
@@ -145,6 +167,22 @@ describe("chord parser", () => {
       const chord = ChordParser.parse(input);
 
       expect(notesString(chord)).toEqual("EbGBbD");
+    });
+
+    it("parses Cmmaj7", () => {
+      const input = "Cmmaj7";
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual("CEbGB");
+    });
+
+    it("parses Bmmaj7", () => {
+      const input = "Bmmaj7";
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual("BDF#A#");
     });
   });
 });
