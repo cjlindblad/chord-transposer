@@ -12,6 +12,7 @@ class ChordParser {
       Note,
       Alteration,
       MinorThird,
+      FlatOrB,
       MajorSeventh,
       MinorSeventh,
       EOF
@@ -21,7 +22,9 @@ class ChordParser {
       value?: string;
     }
 
-    class Lexemes {
+    const loweredInput = input.toLowerCase();
+
+    class Lexer {
       private lexemes: Lexeme[];
       private currentIndex: number;
 
@@ -44,10 +47,10 @@ class ChordParser {
 
     const _lexemes: Lexeme[] = [];
 
-    const NOTES = ["A", "B", "C", "D", "E", "F", "G"];
+    const NOTES = ["a", "c", "d", "e", "f", "g"];
 
-    for (let i = 0; i < input.length; i++) {
-      const char = input[i];
+    for (let i = 0; i < loweredInput.length; i++) {
+      const char = loweredInput[i];
 
       if (NOTES.indexOf(char) !== -1) {
         _lexemes.push({
@@ -57,7 +60,10 @@ class ChordParser {
         continue;
       }
 
-      if (i + 4 <= input.length && input.substring(i, i + 4) === "maj7") {
+      if (
+        i + 4 <= loweredInput.length &&
+        loweredInput.substring(i, i + 4) === "maj7"
+      ) {
         _lexemes.push({
           token: Token.MajorSeventh
         });
@@ -79,10 +85,17 @@ class ChordParser {
         continue;
       }
 
-      if (char === "#" || char === "b") {
+      if (char === "#") {
         _lexemes.push({
           token: Token.Alteration,
           value: char
+        });
+        continue;
+      }
+
+      if (char === "b") {
+        _lexemes.push({
+          token: Token.FlatOrB
         });
         continue;
       }
@@ -94,7 +107,7 @@ class ChordParser {
       token: Token.EOF
     });
 
-    const lexemes = new Lexemes(_lexemes);
+    const lexemes = new Lexer(_lexemes);
 
     let alteration: NoteAlteration | undefined = undefined;
     let third: Third = Interval.MajorThird;
@@ -105,11 +118,21 @@ class ChordParser {
     let currentLexeme: Lexeme;
     currentLexeme = lexemes.getNext();
 
-    if (currentLexeme.token !== Token.Note) {
+    if (
+      currentLexeme.token !== Token.Note &&
+      currentLexeme.token !== Token.FlatOrB
+    ) {
       throw new Error("Expected note");
     }
 
-    const baseNote = NoteName[currentLexeme.value!.toUpperCase() as Notes];
+    let baseNote: NoteName;
+    if (currentLexeme.token === Token.Note) {
+      baseNote = NoteName[currentLexeme.value!.toUpperCase() as Notes];
+    } else if (currentLexeme.token === Token.FlatOrB) {
+      baseNote = NoteName.B;
+    } else {
+      throw new Error("Could not parse base note");
+    }
 
     if (lexemes.hasNext()) {
       currentLexeme = lexemes.getNext();
@@ -118,9 +141,14 @@ class ChordParser {
         if (currentLexeme.value === "#") {
           alteration = NoteAlteration.Sharp;
         }
-        if (currentLexeme.value === "b") {
-          alteration = NoteAlteration.Flat;
+
+        if (lexemes.hasNext()) {
+          currentLexeme = lexemes.getNext();
         }
+      }
+
+      if (currentLexeme.token === Token.FlatOrB) {
+        alteration = NoteAlteration.Flat;
 
         if (lexemes.hasNext()) {
           currentLexeme = lexemes.getNext();

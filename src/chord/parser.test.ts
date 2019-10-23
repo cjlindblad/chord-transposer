@@ -56,6 +56,14 @@ describe("chord parser", () => {
 
       expect(notesString(chord)).toEqual("BD#F#");
     });
+
+    it("parses a minor character b major chord", () => {
+      const input = "b";
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual("BD#F#");
+    });
   });
 
   describe("minor chords", () => {
@@ -115,6 +123,14 @@ describe("chord parser", () => {
       const chord = ChordParser.parse(input);
 
       expect(notesString(chord)).toEqual("CbEbbGb");
+    });
+
+    it("parses a bb chord with minor characters", () => {
+      const input = "bb";
+
+      const chord = ChordParser.parse(input);
+
+      expect(notesString(chord)).toEqual("BbDF");
     });
   });
 
