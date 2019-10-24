@@ -55,6 +55,44 @@ describe('note creation', () => {
   });
 });
 
+describe('note equality', () => {
+  it('finds one c equal to c', () => {
+    const c = Note.from(NoteName.C);
+    const otherC = Note.from(NoteName.C);
+
+    const equal = c.equals(otherC);
+
+    expect(equal).toBe(true);
+  });
+
+  it('finds c not equal to f', () => {
+    const c = Note.from(NoteName.C);
+    const d = Note.from(NoteName.D);
+
+    const equal = c.equals(d);
+
+    expect(equal).toBe(false);
+  });
+
+  it('finds c# equal to c#', () => {
+    const cSharp = Note.from(NoteName.C, NoteAlteration.Sharp);
+    const otherCSharp = Note.from(NoteName.C, NoteAlteration.Sharp);
+
+    const equal = cSharp.equals(otherCSharp);
+
+    expect(equal).toBe(true);
+  });
+
+  it('find c not equal to c#', () => {
+    const c = Note.from(NoteName.C);
+    const cSharp = Note.from(NoteName.C, NoteAlteration.Sharp);
+
+    const equal = c.equals(cSharp);
+
+    expect(equal).toBe(false);
+  });
+});
+
 describe('note alteration', () => {
   it('can be sharpened', () => {
     const naturalC = Note.from(NoteName.C);

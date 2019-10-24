@@ -173,6 +173,10 @@ export class Note {
     }
   }
 
+  public equals(note: Note): boolean {
+    return this.name === note.name && this.modifier === note.modifier;
+  }
+
   public toString(): string {
     const base = NoteName[this.name];
     const modifier =
