@@ -4,6 +4,88 @@ import { Scale } from './scale';
 import { NoteAlteration } from '../note/noteAlteration';
 import { Mode } from './mode';
 
+describe('scale position from note', () => {
+  it('finds position of major third in C ionian', () => {
+    const note = Note.from(NoteName.C);
+    const scale = Scale.from(note, Mode.Ionian);
+
+    const position = scale.getPositionFromNote(Note.from(NoteName.E));
+
+    expect(3).toEqual(position);
+  });
+
+  it('finds position of fifth in G ionian', () => {
+    const note = Note.from(NoteName.G);
+    const scale = Scale.from(note, Mode.Ionian);
+
+    const position = scale.getPositionFromNote(Note.from(NoteName.D));
+
+    expect(5).toEqual(position);
+  });
+
+  it('finds position of major seventh in C# ionian', () => {
+    const note = Note.from(NoteName.C, NoteAlteration.Sharp);
+    const scale = Scale.from(note, Mode.Ionian);
+
+    const position = scale.getPositionFromNote(
+      Note.from(NoteName.B, NoteAlteration.Sharp)
+    );
+
+    expect(7).toEqual(position);
+  });
+
+  it('throws when requesting position for non existing note', () => {
+    const note = Note.from(NoteName.C);
+    const scale = Scale.from(note, Mode.Ionian);
+
+    const requestNonExistingNotePosition = () => {
+      scale.getPositionFromNote(Note.from(NoteName.C, NoteAlteration.Sharp));
+    };
+
+    expect(requestNonExistingNotePosition).toThrow();
+  });
+});
+
+describe('scale note from position', () => {
+  it('finds note for position 1 in C ionian', () => {
+    const baseNote = Note.from(NoteName.C);
+    const scale = Scale.from(baseNote, Mode.Ionian);
+
+    const note = scale.getNoteFromPosition(1);
+
+    expect(note.toString()).toEqual('C');
+  });
+
+  it('find note for position 4 in F ionian', () => {
+    const baseNote = Note.from(NoteName.F);
+    const scale = Scale.from(baseNote, Mode.Ionian);
+
+    const note = scale.getNoteFromPosition(4);
+
+    expect(note.toString()).toEqual('Bb');
+  });
+
+  it('finds note for position 5 in B ionian', () => {
+    const baseNote = Note.from(NoteName.B);
+    const scale = Scale.from(baseNote, Mode.Ionian);
+
+    const note = scale.getNoteFromPosition(5);
+
+    expect(note.toString()).toEqual('F#');
+  });
+
+  it('throws when requesting illegal position', () => {
+    const note = Note.from(NoteName.C);
+    const scale = Scale.from(note, Mode.Ionian);
+
+    const requestIllegalScalePosition = () => {
+      scale.getNoteFromPosition(13);
+    };
+
+    expect(requestIllegalScalePosition).toThrow();
+  });
+});
+
 describe('ionian scales', () => {
   it('creates a C major scale', () => {
     const c = Note.from(NoteName.C);
