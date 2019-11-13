@@ -9,7 +9,7 @@ export interface ChordIntervals {
 
 const defaultIntervals: ChordIntervals = {
   third: Interval.MajorThird,
-  fifth: Interval.Fifth,
+  fifth: Interval.Fifth
 };
 
 export class Chord {
@@ -50,6 +50,18 @@ export class Chord {
     }
 
     return notes;
+  }
+
+  public getThird(): Third {
+    return this.third;
+  }
+
+  public getFifth(): Fifth {
+    return this.fifth;
+  }
+
+  public getSeventh(): Seventh | undefined {
+    return this.seventh;
   }
 
   public toString(): string {

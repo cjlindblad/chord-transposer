@@ -37,7 +37,6 @@ export class Scale {
     }
 
     // throw if we couldn't find note
-    console.log(this.notes.map(e => e.toString()).join('-'));
     throw new Error(`Couldn't find note (${fromNote.toString()})`);
   }
 
