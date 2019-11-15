@@ -52,6 +52,34 @@ describe('chord progression transposer', () => {
     expect(transposedProgressionString).toEqual('EF#BD#');
   });
 
+  it('transposes 2 5 1 progression from C major to F# major', () => {
+    const Dm7 = Chord.from(Note.from(NoteName.D), {
+      third: Interval.MinorThird,
+      seventh: Interval.MinorSeventh
+    });
+    const G7 = Chord.from(Note.from(NoteName.G), {
+      seventh: Interval.MinorSeventh
+    });
+    const Cmaj7 = Chord.from(Note.from(NoteName.C), {
+      seventh: Interval.MajorSeventh
+    });
+
+    const progression = [Dm7, G7, Cmaj7];
+
+    const fromScale = Scale.from(Note.from(NoteName.C));
+    const toScale = Scale.from(Note.from(NoteName.F, NoteAlteration.Sharp));
+
+    const transposer = new Transposer(progression, fromScale);
+
+    const transposedProgression = transposer.transpose(toScale);
+
+    const transposedProgressionString = transposedProgression
+      .map(chord => chord.toString())
+      .join('');
+
+    expect(transposedProgressionString).toEqual('G#m7C#7F#maj7');
+  });
+
   it('transposes "Värmlandsvisan" from Dm to Am', () => {
     const Dm = Chord.from(Note.from(NoteName.D), {
       third: Interval.MinorThird
