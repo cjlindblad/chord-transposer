@@ -28,6 +28,10 @@ describe('transpose suggestor', () => {
 
     const firstSuggestion = rankedTranpositions[0];
 
-    expect(firstSuggestion.scale.toString()).toEqual('CDEFGAB');
+    const progressionString = firstSuggestion.progression
+      .map(chord => chord.toString())
+      .join('');
+
+    expect(progressionString).toEqual('CGAmF');
   });
 });
