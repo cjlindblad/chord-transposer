@@ -5,14 +5,14 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "description": "",
-  "main": "",
+  "main": "./lib/api.js",
   "files": [
     "lib/**/*"
   ],
   "prepare": "npm run build",
   "scripts": {
     "test": "jest --coverage",
-    "build": "rm -rf ./lib/ && tsc",
+    "build": "rm -rf ./lib/ && tsc"
   },
   "repository": {
     "type": "git",
