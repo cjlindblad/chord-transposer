@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "target": "es6",
     "module": "commonjs",
-    "outDir": "out",
+    "outDir": "lib",
     "strict": true,
     "noImplicitAny": true
-  }
+  },
+  "exclude": ["src/**/*.test.ts"]
 }

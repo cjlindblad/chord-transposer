@@ -6,8 +6,13 @@
   },
   "description": "",
   "main": "",
+  "files": [
+    "lib/**/*"
+  ],
+  "prepare": "npm run build",
   "scripts": {
-    "test": "tsc && jest --coverage"
+    "test": "jest --coverage",
+    "build": "rm -rf ./lib/ && tsc",
   },
   "repository": {
     "type": "git",
@@ -26,6 +31,7 @@
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
     "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
     "typescript": "^3.6.3"
   },
   "browserslist": [

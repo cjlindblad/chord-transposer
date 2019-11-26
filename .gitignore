@@ -1,6 +1,7 @@
 # output folder
 dist/
 out/
+lib/
 
 # Logs
 logs

@@ -1,9 +1,0 @@
-Thoughts about transposition:
-
-Input -> "C G7 Am F"
-
-Map to scale position
-
-IM -> I V7 VIm IV
-
-Output -> "G D7 Em C"
