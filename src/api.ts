@@ -15,17 +15,16 @@ import { Mode } from './scale/mode';
 import Transposer from './transposer/transposer';
 import TransposeSuggestor from './transposer/transposeSuggestor';
 
-export default {
-  Chord,
-  ChordParser,
-  PianoChordValuator,
-  Interval,
-  Note,
-  NoteAlteration,
-  NoteName,
-  Semitone,
-  Scale,
-  Mode,
-  Transposer,
-  TransposeSuggestor
-};
+
+export { Chord }
+export { ChordParser }
+export { PianoChordValuator }
+export { Interval }
+export { Note }
+export { NoteAlteration }
+export { NoteName }
+export { Semitone }
+export { Scale }
+export { Mode }
+export { Transposer }
+export { TransposeSuggestor }
