@@ -3,7 +3,7 @@
     "declaration": true,
     "target": "es6",
     "module": "commonjs",
-    "outDir": "lib",
+    "outDir": "transpiled",
     "strict": true,
     "noImplicitAny": true
   },

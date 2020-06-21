@@ -1,7 +1,7 @@
 # output folder
 dist/
 out/
-lib/
+transpiled/
 
 # Logs
 logs

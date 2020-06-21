@@ -12,7 +12,7 @@
   "prepare": "npm run build",
   "scripts": {
     "test": "jest --coverage",
-    "build": "rm -rf ./lib/ && tsc"
+    "build": "rm -rf ./transpiled/ && tsc"
   },
   "repository": {
     "type": "git",
