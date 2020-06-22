@@ -5,7 +5,8 @@
     "module": "commonjs",
     "outDir": "transpiled",
     "strict": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "skipLibCheck": true
   },
   "exclude": ["src/**/*.test.ts"]
 }
