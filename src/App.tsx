@@ -1,5 +1,5 @@
-import React from "react";
-import { Scale, Note, NoteName } from "./lib/src/api";
+import React from 'react';
+import { Scale, Note, NoteName } from './lib/api';
 
 const scale = Scale.from(Note.from(NoteName.C));
 
