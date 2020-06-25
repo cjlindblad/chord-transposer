@@ -1,6 +1,88 @@
 import React, { useState } from 'react';
-import { Note, NoteName, Chord, Interval } from './lib/api';
+import {
+  Scale,
+  Note,
+  NoteName,
+  Chord,
+  Interval,
+  Mode,
+  NoteAlteration,
+} from './lib/api';
 import ChordPicker from './components/ChordPicker';
+
+interface ScalePair {
+  major: Scale;
+  minor: Scale;
+}
+
+const scaleCircle: ScalePair[] = [
+  {
+    major: Scale.from(Note.from(NoteName.C)),
+    minor: Scale.from(Note.from(NoteName.A), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.G)),
+    minor: Scale.from(Note.from(NoteName.E), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.D)),
+    minor: Scale.from(Note.from(NoteName.B), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.A)),
+    minor: Scale.from(
+      Note.from(NoteName.F, NoteAlteration.Sharp),
+      Mode.Aeolian
+    ),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.E)),
+    minor: Scale.from(
+      Note.from(NoteName.C, NoteAlteration.Sharp),
+      Mode.Aeolian
+    ),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.B)),
+    minor: Scale.from(
+      Note.from(NoteName.G, NoteAlteration.Sharp),
+      Mode.Aeolian
+    ),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.F, NoteAlteration.Sharp)),
+    minor: Scale.from(
+      Note.from(NoteName.D, NoteAlteration.Sharp),
+      Mode.Aeolian
+    ),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.G, NoteAlteration.Flat)),
+    minor: Scale.from(Note.from(NoteName.E, NoteAlteration.Flat), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.D, NoteAlteration.Flat)),
+    minor: Scale.from(Note.from(NoteName.B, NoteAlteration.Flat), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.A, NoteAlteration.Flat)),
+    minor: Scale.from(Note.from(NoteName.F), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.E, NoteAlteration.Flat)),
+    minor: Scale.from(Note.from(NoteName.C), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.B, NoteAlteration.Flat)),
+    minor: Scale.from(Note.from(NoteName.G), Mode.Aeolian),
+  },
+  {
+    major: Scale.from(Note.from(NoteName.F)),
+    minor: Scale.from(Note.from(NoteName.D), Mode.Aeolian),
+  },
+];
+
+console.log(scaleCircle.map((pair) => `${pair.major.name} ${pair.minor.name}`));
 
 const chords = [
   Chord.from(Note.from(NoteName.C)),
@@ -19,6 +101,20 @@ function App() {
     <div className="flex h-screen w-full bg-gray-100">
       <div className="flex-1 mx-2 pt-16 flex flex-col items-center">
         <h1 className="text-center text-gray-800 text-4xl leading-none font-semibold">
+          Pick a scale!
+        </h1>
+        <div className="flex flex-wrap justify-center mt-4">
+          {scaleCircle.map((scalePair) => (
+            <div
+              key={`${scalePair.major.toString()}${scalePair.minor.toString()}`}
+              className="mx-2 mb-1 w-10 text-center"
+            >
+              <div className="text-2xl font-bold">{scalePair.major.name}</div>
+              <div className="text-xl">{scalePair.minor.name}</div>
+            </div>
+          ))}
+        </div>
+        {/* <h1 className="text-center text-gray-800 text-4xl leading-none font-semibold">
           Pick some chords!
         </h1>
         <ChordPicker
@@ -52,7 +148,7 @@ function App() {
               {chord.toString()}
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -3,12 +3,15 @@ import { Mode, ModeIntervals } from './mode';
 
 export class Scale {
   private notes: Note[] = [];
+  private mode: Mode;
 
   private constructor(base: Note, mode: Mode) {
+    this.mode = mode;
+
     const intervals = ModeIntervals[mode];
     this.notes.push(base);
 
-    intervals.forEach(interval => {
+    intervals.forEach((interval) => {
       const prevNote = this.notes[this.notes.length - 1];
       this.notes.push(prevNote.addInterval(interval));
     });
@@ -40,7 +43,17 @@ export class Scale {
     throw new Error(`Couldn't find note (${fromNote.toString()})`);
   }
 
+  public get name() {
+    let result = this.notes[0].toString();
+
+    if (this.mode === Mode.Aeolian) {
+      result += 'm';
+    }
+
+    return result;
+  }
+
   public toString() {
-    return this.notes.map(note => note.toString()).join('');
+    return this.notes.map((note) => note.toString()).join('');
   }
 }
