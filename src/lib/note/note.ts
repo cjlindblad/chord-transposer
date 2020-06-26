@@ -67,6 +67,14 @@ export class Note {
     return Note.from(this.name, NoteAlteration.Natural);
   }
 
+  public intervalTo(note: Note) {
+    const fromSemiTone = this.getSemitoneValue();
+    const toSemiTone = note.getSemitoneValue();
+    const difference = (toSemiTone + 12 - fromSemiTone) % 12;
+
+    return difference as Interval;
+  }
+
   public addInterval(interval: Interval): Note {
     let noteSteps = 0;
     let semitones = 0;

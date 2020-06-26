@@ -82,19 +82,21 @@ const scaleCircle: ScalePair[] = [
   },
 ];
 
-console.log(scaleCircle.map((pair) => `${pair.major.name} ${pair.minor.name}`));
-
-const chords = [
-  Chord.from(Note.from(NoteName.C)),
-  Chord.from(Note.from(NoteName.D), { third: Interval.MinorThird }),
-  Chord.from(Note.from(NoteName.E), { third: Interval.MinorThird }),
-  Chord.from(Note.from(NoteName.F)),
-  Chord.from(Note.from(NoteName.G)),
-  Chord.from(Note.from(NoteName.A), { third: Interval.MinorThird }),
-  Chord.from(Note.from(NoteName.B), { third: Interval.MinorThird }),
-];
+// const chords = [
+//   Chord.from(Note.from(NoteName.C)),
+//   Chord.from(Note.from(NoteName.D), { third: Interval.MinorThird }),
+//   Chord.from(Note.from(NoteName.E), { third: Interval.MinorThird }),
+//   Chord.from(Note.from(NoteName.F)),
+//   Chord.from(Note.from(NoteName.G)),
+//   Chord.from(Note.from(NoteName.A), { third: Interval.MinorThird }),
+//   Chord.from(Note.from(NoteName.B), { third: Interval.MinorThird }),
+// ];
 
 function App() {
+  const [pickedScalePair, setPickedScalePair] = useState(scaleCircle[0]);
+
+  const triads = pickedScalePair.major.triads();
+
   const [inputText, setInputText] = useState('');
   const [pickedChords, setPickedChords] = useState<Chord[]>([]);
   return (
@@ -107,7 +109,12 @@ function App() {
           {scaleCircle.map((scalePair) => (
             <div
               key={`${scalePair.major.toString()}${scalePair.minor.toString()}`}
-              className="mx-2 mb-1 w-10 text-center"
+              onClick={() => setPickedScalePair(scalePair)}
+              className={`mx-2 mb-1 w-12 text-center cursor-pointer ${
+                pickedScalePair.major.toString() === scalePair.major.toString()
+                  ? 'bg-white border-gray-300 border-2 rounded-lg'
+                  : ''
+              }`}
             >
               <div className="text-2xl font-bold">{scalePair.major.name}</div>
               <div className="text-xl">{scalePair.minor.name}</div>
@@ -142,13 +149,17 @@ function App() {
                 ))}
           </div>
         </div>
+        */}
         <div className="mt-8 flex flex-wrap">
-          {pickedChords.map((chord) => (
-            <div className="transition duration-150 ease-in-out mx-1 w-16 text-center cursor-pointer hover:shadow-md rounded-md pb-2 pt-6 bg-white border-gray-300 border-solid border-2 font-bold text-2xl">
+          {triads.map((chord) => (
+            <div
+              key={chord.toString()}
+              className="transition duration-150 ease-in-out mx-1 w-24 text-center cursor-pointer hover:shadow-md rounded-md pb-2 pt-8 bg-white border-gray-300 border-solid border-2 font-bold text-2xl"
+            >
               {chord.toString()}
             </div>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );

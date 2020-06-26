@@ -14,5 +14,5 @@ export enum Interval {
 }
 
 export type Third = Interval.MinorThird | Interval.MajorThird;
-export type Fifth = Interval.Fifth;
+export type Fifth = Interval.Fifth | Interval.AugmentedFourth;
 export type Seventh = Interval.MinorSeventh | Interval.MajorSeventh;

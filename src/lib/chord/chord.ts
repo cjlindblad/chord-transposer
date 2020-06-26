@@ -9,7 +9,7 @@ export interface ChordIntervals {
 
 const defaultIntervals: ChordIntervals = {
   third: Interval.MajorThird,
-  fifth: Interval.Fifth
+  fifth: Interval.Fifth,
 };
 
 export class Chord {
@@ -66,13 +66,20 @@ export class Chord {
 
   public toString(): string {
     const chordName = this.base.toString();
-    const third = this.third === Interval.MinorThird ? 'm' : '';
-    const seventh =
+    let third = this.third === Interval.MinorThird ? 'm' : '';
+    let seventh =
       this.seventh === Interval.MinorSeventh
         ? '7'
         : this.seventh === Interval.MajorSeventh
         ? 'maj7'
         : '';
+
+    if (
+      this.third === Interval.MinorThird &&
+      this.fifth === Interval.AugmentedFourth
+    ) {
+      third = 'dim';
+    }
 
     return `${chordName}${third}${seventh}`;
   }

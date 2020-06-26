@@ -1,5 +1,7 @@
 import { Note } from '../note/note';
 import { Mode, ModeIntervals } from './mode';
+import { Chord } from '../api';
+import { Third, Fifth, Seventh } from '../interval/interval';
 
 export class Scale {
   private notes: Note[] = [];
@@ -41,6 +43,30 @@ export class Scale {
 
     // throw if we couldn't find note
     throw new Error(`Couldn't find note (${fromNote.toString()})`);
+  }
+
+  public triads() {
+    const triads: Chord[] = [];
+
+    for (let i = 0; i < this.notes.length; i++) {
+      const baseNote = this.notes[i];
+      const third = this.notes[(i + 2) % this.notes.length];
+      const fifth = this.notes[(i + 4) % this.notes.length];
+      const seventh = this.notes[(i + 6) % this.notes.length];
+
+      const thirdInterval = baseNote.intervalTo(third);
+      const fifthInterval = baseNote.intervalTo(fifth);
+      const seventhInterval = baseNote.intervalTo(seventh);
+
+      const chord = Chord.from(baseNote, {
+        third: thirdInterval as Third,
+        fifth: fifthInterval as Fifth,
+        seventh: seventhInterval as Seventh,
+      });
+      triads.push(chord);
+    }
+
+    return triads;
   }
 
   public get name() {
